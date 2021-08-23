@@ -1,6 +1,6 @@
-package com.jesussanchez.crud.rest;
+package com.jesussanchez.crud.controller;
 
-import com.jesussanchez.crud.model.Persona;
+import com.jesussanchez.crud.model.PersonaModel;
 import com.jesussanchez.crud.services.PersonaServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,33 +13,33 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/persona")
-public class PersonaRest {
+public class PersonaController {
     @Autowired
     private PersonaServices personaServices;
 
     @PostMapping("/save")
-    private ResponseEntity<Persona> save(@RequestBody Persona persona) {
-        Persona persona1 = personaServices.create(persona);
+    private ResponseEntity<PersonaModel> save(@RequestBody PersonaModel personaModel) {
+        PersonaModel personaModel1 = personaServices.create(personaModel);
         try {
-            return ResponseEntity.created(new URI("/api/persona/save" + persona1.getId())).body(persona1);
+            return ResponseEntity.created(new URI("/api/persona/save" + personaModel1.getId())).body(personaModel1);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
 
     @GetMapping
-    private ResponseEntity<List<Persona>> getAllPersonas() {
+    private ResponseEntity<List<PersonaModel>> getAllPersonas() {
         return ResponseEntity.ok(personaServices.getAllPersonas());
     }
 
     @DeleteMapping
-    private ResponseEntity<Void> deletePersona(@RequestBody Persona persona) {
-        personaServices.delete(persona);
+    private ResponseEntity<Void> deletePersona(@RequestBody PersonaModel personaModel) {
+        personaServices.delete(personaModel);
         return ResponseEntity.ok().build();
     }
 
     @GetMapping(value = "{id}")
-    private ResponseEntity<Optional<Persona>> getPersonaById(@PathVariable("id") Long id) {
+    private ResponseEntity<Optional<PersonaModel>> getPersonaById(@PathVariable("id") Long id) {
         return ResponseEntity.ok(personaServices.findById(id));
     }
 
